@@ -1,0 +1,41 @@
+import pyautogui
+import random
+import time
+
+# Set up the button on the screen
+button_pos = (100, 100)  # Change these coordinates to position the button on your screen
+button_color = (255, 255, 255)  # Change this color to match the background color of your screen
+button_size = 50  # Change this value to adjust the size of the button
+
+# Define the function that will brute force the codes
+def brute_force():
+    while True:
+        # Generate a random code and type it in the input box
+        code = ''.join(random.choices(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'], k=6))
+        pyautogui.click(500, 500)  # Change these coordinates to position the mouse over the input box
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.typewrite(code)
+
+        # Click the submit button and wait for the result
+        pyautogui.click(600, 600)  # Change these coordinates to position the mouse over the submit button
+        time.sleep(1)  # Change this value to adjust the time it takes to get the result
+
+        # Check if the code was correct and stop if it was
+        result = pyautogui.locateOnScreen('correct.png')  # Change this filename to match the screenshot of the correct message
+        if result is not None:
+            break
+
+    # Create the button on the screen and wait for it to be pressed
+    pyautogui.screenshot('screen.png')  # Take a screenshot of the current screen
+    button = pyautogui.screenshot('button.png', region=(button_pos[0], button_pos[1], button_size, button_size))  # Create the button image
+    while True:
+        pyautogui.click(button_pos)  # Change these coordinates to position the mouse over the button
+        if pyautogui.locateOnScreen(button) is None:
+            break
+
+# Start the script and wait for the button to be pressed
+while True:
+    pyautogui.screenshot('screen.png')  # Take a screenshot of the current screen
+    if pyautogui.locateOnScreen('button.png') is not None:  # Check if the button is on the screen
+        pyautogui.click(button_pos)  # Change these coordinates to position the mouse over the button
+        brute_force()
